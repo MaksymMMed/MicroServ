@@ -1,0 +1,60 @@
+version: '3.4'
+
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "8080:15672"
+      - "5672:5672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 3s
+      timeout: 3s
+      retries: 3
+
+  senderapi:
+    image: ${DOCKER_REGISTRY-}senderapi
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+      mssql:
+        condition: service_healthy
+        restart: true
+    build:
+      context: .
+      dockerfile: SenderAPI/Dockerfile
+
+  receiverapi:
+    image: ${DOCKER_REGISTRY-}receiverapi
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+      mssql:
+        condition: service_healthy
+        restart: true
+    build:
+      context: .
+      dockerfile: ReceiverAPI/Dockerfile
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD : "YourStrong@Password"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    healthcheck:
+      test: [ "CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -U sa -P YourStrong@Password -Q 'SELECT 1' -C || exit 1" ]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+
+volumes:
+  mssql_data:
