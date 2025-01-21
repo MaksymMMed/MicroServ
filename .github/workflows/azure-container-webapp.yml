@@ -35,7 +35,7 @@ jobs:
       - name: Build and push SenderAPI image
         uses: docker/build-push-action@v5
         with:
-          context: ./SenderAPI
+          context: .
           push: true
           tags: ${{ env.ACR_NAME }}.azurecr.io/senderapi:${{ github.sha }}
           file: ./SenderAPI/Dockerfile
@@ -43,7 +43,7 @@ jobs:
       - name: Build and push ReceiverAPI image
         uses: docker/build-push-action@v5
         with:
-          context: ./ReceiverAPI
+          context: .
           push: true
           tags: ${{ env.ACR_NAME }}.azurecr.io/receiverapi:${{ github.sha }}
           file: ./ReceiverAPI/Dockerfile
