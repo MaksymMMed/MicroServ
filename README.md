@@ -1,1 +1,1 @@
-# MicroServ
+SenderAPI for sending forecasts, ReceiverAPI consumes it by RabbitMQ, and insert into database, also used Docker Compose for deployment, https://localhost:20001/swagger/index.html for receiver https://localhost:10001/swagger/index.html for sender
