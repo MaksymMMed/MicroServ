@@ -37,7 +37,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.ACR_NAME }}.azurecr.io/senderapi:${{ github.sha }}
+          tags: ${{ env.ACR_NAME }}.azurecr.io/senderapi:dev
           file: ./SenderAPI/Dockerfile
 
       - name: Build and push ReceiverAPI image
@@ -45,7 +45,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.ACR_NAME }}.azurecr.io/receiverapi:${{ github.sha }}
+          tags: ${{ env.ACR_NAME }}.azurecr.io/receiverapi:dev
           file: ./ReceiverAPI/Dockerfile
 
   deploy:
@@ -63,8 +63,9 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         images: |
-          ${{ env.ACR_NAME }}.azurecr.io/senderapi:${{ github.sha }}
-          ${{ env.ACR_NAME }}.azurecr.io/receiverapi:${{ github.sha }}
+          ${{ env.ACR_NAME }}.azurecr.io/senderapi:dev
+          ${{ env.ACR_NAME }}.azurecr.io/receiverapi:dev
         configuration-file: docker-compose.yml
+      env:
+        ACR_NAME: ${{ secrets.ACR_NAME }}

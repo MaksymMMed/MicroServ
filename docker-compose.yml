@@ -14,8 +14,9 @@ services:
       retries: 3
 
   senderapi:
-    image: maksymmcontainers.azurecr.io/senderapi:dev
+    image: ${ACR_NAME}.azurecr.io/senderapi:dev
     environment:
+      - ACR_NAME=${ACR_NAME}
       - ASPNETCORE_HTTP_PORTS=5000
       - ASPNETCORE_HTTPS_PORTS=5001
     ports:
@@ -33,9 +34,9 @@ services:
       dockerfile: SenderAPI/Dockerfile
 
   receiverapi:
-    image: maksymmcontainers.azurecr.io/receiverapi:dev
+    image: ${ACR_NAME}.azurecr.io/receiverapi:dev
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ACR_NAME=${ACR_NAME}
       - ASPNETCORE_HTTP_PORTS=6000
       - ASPNETCORE_HTTPS_PORTS=6001
     ports:
