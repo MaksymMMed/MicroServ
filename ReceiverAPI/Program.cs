@@ -20,8 +20,16 @@ builder.Services.AddScoped<IRabbitReceiverService, RabbitReceiverService>();
 builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddHostedService<RabbitSubscriber>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")));
+}
 
 var app = builder.Build();
 
@@ -42,6 +50,19 @@ if (app.Environment.IsDevelopment())
             dbContext.Forecast.Add(new WeatherForecast { Id = Guid.NewGuid(),TemperatureC = -20,TemperatureF = 0,Summary ="Winter" });
             dbContext.Forecast.Add(new WeatherForecast { Id = Guid.NewGuid(),TemperatureC = 15,TemperatureF = 32,Summary ="Spring" });
             dbContext.SaveChanges();
+        }
+    }
+}
+else
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var databaseExists = await dbContext.Database.CanConnectAsync();
+
+        if (!databaseExists)
+        {
+            await dbContext.Database.MigrateAsync();
         }
     }
 }
