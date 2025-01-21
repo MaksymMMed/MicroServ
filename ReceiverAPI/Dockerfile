@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ReceiverAPI/ReceiverAPI.csproj", "ReceiverAPI/"]
-COPY ["TransitService/TransitService.csproj", "TransitService/"]
+COPY ["../TransitService/TransitService.csproj", "TransitService/"]
 RUN dotnet restore "./ReceiverAPI/ReceiverAPI.csproj"
 COPY . .
 WORKDIR "/src/ReceiverAPI"

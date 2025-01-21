@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["SenderAPI/SenderAPI.csproj", "SenderAPI/"]
-COPY ["TransitService/TransitService.csproj", "TransitService/"]
+COPY ["../TransitService/TransitService.csproj", "TransitService/"]
 RUN dotnet restore "./SenderAPI/SenderAPI.csproj"
 COPY . .
 WORKDIR "/src/SenderAPI"
