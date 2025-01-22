@@ -3,7 +3,7 @@ version: '3.4'
 services:
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:3-management
+    image: ${ACR_NAME}.azurecr.io/rabbitmq:dev
     ports:
       - "8080:15672"
       - "5672:5672"
@@ -33,6 +33,7 @@ services:
   receiverapi:
     image: ${ACR_NAME}.azurecr.io/receiverapi:dev
     environment:
+      - DB_CONNECTION_STRING=${DB_CONNECTION_STRING}
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_HTTP_PORTS=6000
       - ASPNETCORE_HTTPS_PORTS=6001

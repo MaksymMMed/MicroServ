@@ -1,6 +1,18 @@
 version: '3.4'
 
 services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+      - "8080:15672"
+      - "5672:5672"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 3s
+      timeout: 3s
+      retries: 3
+
   senderapi:
     image: ${DOCKER_REGISTRY-}senderapi
     environment:
