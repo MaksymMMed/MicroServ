@@ -3,24 +3,24 @@ version: '3.4'
 services:
   senderapi:
     image: ${DOCKER_REGISTRY-}senderapi
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
     depends_on:
         mssql:
             condition: service_healthy
             restart: true
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
 
   receiverapi:
     image: ${DOCKER_REGISTRY-}receiverapi
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
     depends_on:
         mssql:
             condition: service_healthy
             restart: true
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
