@@ -75,7 +75,10 @@ jobs:
           name: docker-compose-file
 
       - name: Set ACR_NAME Environment Variable
-        run: echo "ACR_NAME=${{ env.ACR_NAME }}" >> $GITHUB_ENV
+        run: echo "ACR_NAME=${{ env.ACR_NAME }} >> $GITHUB_ENV
+
+      - name: Set DB_CONNECTION_STRING Environment Variable
+        run: echo "DB_CONNECTION_STRING=${{ secrets.ACR_NAME }} >> $GITHUB_ENV
 
       - name: Replace variables in docker-compose.yml
         run: |
