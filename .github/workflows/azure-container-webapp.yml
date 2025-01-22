@@ -74,9 +74,13 @@ jobs:
         with:
           name: docker-compose-file
 
-      - name: Replace variables in Docker Compose file
+      - name: Set ACR_NAME Environment Variable
+        run: echo "ACR_NAME=${{ env.ACR_NAME }}" >> $GITHUB_ENV
+
+      - name: Replace variables in docker-compose.yml
         run: |
-          envsubst <docker-compose.yml.template > docker-compose.yml
+          envsubst < ${{ github.workspace }}/docker-compose.yml > ${{ github.workspace }}/docker-compose.yml.new
+          mv ${{ github.workspace }}/docker-compose.yml.new ${{ github.workspace }}/docker-compose.yml
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -87,6 +91,4 @@ jobs:
             ${{ env.ACR_NAME }}.azurecr.io/senderapi:dev
             ${{ env.ACR_NAME }}.azurecr.io/receiverapi:dev
           configuration-file: ${{ github.workspace }}/docker-compose.yml
-        env:
-          ACR_NAME: ${{ env.ACR_NAME }}
 

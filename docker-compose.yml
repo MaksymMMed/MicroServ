@@ -16,7 +16,6 @@ services:
   senderapi:
     image: ${ACR_NAME}.azurecr.io/senderapi:dev
     environment:
-      - ACR_NAME=${ACR_NAME}
       - ASPNETCORE_HTTP_PORTS=5000
       - ASPNETCORE_HTTPS_PORTS=5001
     ports:
@@ -33,7 +32,6 @@ services:
   receiverapi:
     image: ${ACR_NAME}.azurecr.io/receiverapi:dev
     environment:
-      - ACR_NAME=${ACR_NAME}
       - ASPNETCORE_HTTP_PORTS=6000
       - ASPNETCORE_HTTPS_PORTS=6001
     ports:
