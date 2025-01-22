@@ -61,10 +61,14 @@ jobs:
       - name: Azure Login using OIDC
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_USER_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          identity-provider: "github"
+          creds: ${{ secrets.AZURE_CREDS }}
+
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
