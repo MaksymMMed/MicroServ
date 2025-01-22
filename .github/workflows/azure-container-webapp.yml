@@ -74,6 +74,10 @@ jobs:
         with:
           name: docker-compose-file
 
+      - name: Replace variables in Docker Compose file
+        run: |
+          envsubst <docker-compose.yml.template > docker-compose.yml
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -84,5 +88,5 @@ jobs:
             ${{ env.ACR_NAME }}.azurecr.io/receiverapi:dev
           configuration-file: ${{ github.workspace }}/docker-compose.yml
         env:
-          ACR_NAME: ${{ secrets.ACR_NAME }}
+          ACR_NAME: ${{ env.ACR_NAME }}
 
