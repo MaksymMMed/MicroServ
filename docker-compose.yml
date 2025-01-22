@@ -26,9 +26,6 @@ services:
       rabbitmq:
         condition: service_healthy
         restart: true
-      mssql:
-        condition: service_healthy
-        restart: true
     build:
       context: .
       dockerfile: SenderAPI/Dockerfile

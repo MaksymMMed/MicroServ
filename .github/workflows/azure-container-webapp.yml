@@ -48,6 +48,12 @@ jobs:
           tags: ${{ env.ACR_NAME }}.azurecr.io/receiverapi:dev
           file: ./ReceiverAPI/Dockerfile
 
+      - name: Upload docker-compose.yml as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: docker-compose-file
+          path: ./docker-compose.yml
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -63,6 +69,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDS }}
 
+      - name: Download docker-compose.yml artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: docker-compose-file
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
@@ -71,7 +82,7 @@ jobs:
           images: |
             ${{ env.ACR_NAME }}.azurecr.io/senderapi:dev
             ${{ env.ACR_NAME }}.azurecr.io/receiverapi:dev
-          configuration-file: ./docker-compose.yml
+          configuration-file: ${{ github.workspace }}/docker-compose.yml
         env:
           ACR_NAME: ${{ secrets.ACR_NAME }}
 
