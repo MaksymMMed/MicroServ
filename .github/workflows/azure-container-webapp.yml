@@ -55,7 +55,7 @@ jobs:
       name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      contents: none
+      contents: read
 
     steps:
       - name: Azure Login
@@ -71,7 +71,7 @@ jobs:
           images: |
             ${{ env.ACR_NAME }}.azurecr.io/senderapi:dev
             ${{ env.ACR_NAME }}.azurecr.io/receiverapi:dev
-          configuration-file: ./.github/docker-compose.yml
+          configuration-file: ./docker-compose.yml
         env:
           ACR_NAME: ${{ secrets.ACR_NAME }}
 
