@@ -28,7 +28,7 @@ else
 {
     builder.Services.AddSingleton(sg => new ConnectionFactory
     {
-        Uri = new Uri(Environment.GetEnvironmentVariable("RABBITMQ_URI")!)
+        Uri = new Uri(Environment.GetEnvironmentVariable("SERVICE_BUS_STRING")!)
 
     });
 
