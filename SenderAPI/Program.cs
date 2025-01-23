@@ -8,13 +8,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IRabbitSenderService, RabbitSenderService>();
 
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
     builder.Services.AddSingleton(sg => new ConnectionFactory
     {
         HostName = "rabbitmq"
@@ -26,6 +21,14 @@ else
     {
         Uri = new Uri(Environment.GetEnvironmentVariable("RABBITMQ_URI")!)
     });
+}
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
