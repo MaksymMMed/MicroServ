@@ -12,24 +12,33 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton(sg => new ConnectionFactory
-{
-    HostName = "rabbitmq"
-});
-builder.Services.AddScoped<IRabbitReceiverService, RabbitReceiverService>();
-builder.Services.AddScoped<IWeatherService, WeatherService>();
-builder.Services.AddHostedService<RabbitSubscriber>();
 
 if (builder.Environment.IsDevelopment())
 {
+    builder.Services.AddSingleton(sg => new ConnectionFactory
+    {
+        HostName = "rabbitmq",
+
+    });
+
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 }
 else
 {
+    builder.Services.AddSingleton(sg => new ConnectionFactory
+    {
+        Uri = new Uri(Environment.GetEnvironmentVariable("RABBITMQ_URI")!)
+
+    });
+
     builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")));
 }
+
+builder.Services.AddScoped<IRabbitReceiverService, RabbitReceiverService>();
+builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.AddHostedService<RabbitSubscriber>();
 
 var app = builder.Build();
 

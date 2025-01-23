@@ -18,6 +18,9 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     depends_on:
+        rabbitmq:
+            condition: service_healthy
+            restart: true
         mssql:
             condition: service_healthy
             restart: true
@@ -31,6 +34,9 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
     depends_on:
         mssql:
+            condition: service_healthy
+            restart: true
+        rabbitmq:
             condition: service_healthy
             restart: true
     volumes:

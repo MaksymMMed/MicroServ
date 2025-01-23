@@ -80,6 +80,9 @@ jobs:
       - name: Set DB_CONNECTION_STRING Environment Variable
         run: echo "DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}" >> $GITHUB_ENV
 
+      - name: Set SERVICE_BUS_STRING Environment Variable
+        run: echo "SERVICE_BUS_STRING=${{ secrets.SERVICE_BUS_STRING }}" >> $GITHUB_ENV
+
       - name: Replace variables in docker-compose.yml
         run: |
           envsubst < ${{ github.workspace }}/docker-compose.yml > ${{ github.workspace }}/docker-compose.yml.new
