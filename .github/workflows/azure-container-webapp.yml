@@ -86,6 +86,9 @@ jobs:
       - name: Set KEY_VAULT_NAME Environment Variable
         run: echo "KEY_VAULT_NAME=${{ secrets.KEY_VAULT_NAME }}" >> $GITHUB_ENV
 
+      - name: Set AZURE_CREDS Environment Variable
+        run: echo "AZURE_CREDS=${{ secrets.AZURE_CREDS }}" >> $GITHUB_ENV
+
       - name: Replace variables in docker-compose.yml
         run: |
           envsubst < ${{ github.workspace }}/docker-compose.yml > ${{ github.workspace }}/docker-compose.yml.new

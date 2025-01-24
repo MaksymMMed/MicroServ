@@ -7,6 +7,7 @@ services:
     environment:
       - SERVICE_BUS_STRING=${SERVICE_BUS_STRING}
       - KEY_VAULT_NAME=${KEY_VAULT_NAME}
+      - AZURE_CREDS=${AZURE_CREDS}
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_HTTP_PORTS=5000
       - ASPNETCORE_HTTPS_PORTS=5001
@@ -21,6 +22,7 @@ services:
     image: ${ACR_NAME}.azurecr.io/receiverapi:dev
     environment:
       - SERVICE_BUS_STRING=${SERVICE_BUS_STRING}
+      - AZURE_CREDS=${AZURE_CREDS}
       - KEY_VAULT_NAME=${KEY_VAULT_NAME}
       - DB_CONNECTION_STRING=${DB_CONNECTION_STRING}
       - ASPNETCORE_ENVIRONMENT=Production
