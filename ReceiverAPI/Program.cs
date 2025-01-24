@@ -32,7 +32,7 @@ if (builder.Environment.IsDevelopment())
 else
 {
     string keyVaultName = Environment.GetEnvironmentVariable("KEY_VAULT_NAME")!;
-    string credentialsJson = Environment.GetEnvironmentVariable("AZURE_CREDS")!;
+    string credentialsJson = Environment.GetEnvironmentVariable("AZURE_CREDS_ENV")!;
 
     if (string.IsNullOrEmpty(credentialsJson))
     {
