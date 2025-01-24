@@ -1,4 +1,7 @@
+using Azure.Identity;
+using Azure.Security.KeyVault.Certificates;
 using RabbitMQ.Client;
+using System.Security.Cryptography.X509Certificates;
 using TransitService.TransitServices.Sender;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +20,17 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
+    var certificateClient = new CertificateClient(new Uri(Environment.GetEnvironmentVariable("KEY_VAULT_NAME")!), new DefaultAzureCredential());
+    var certificate = certificateClient.GetCertificate("BaseCert").Value;
+
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ConfigureHttpsDefaults(httpsOptions =>
+        {
+            httpsOptions.ServerCertificate = new X509Certificate2(certificate.Cer);
+        });
+    });
+
     builder.Services.AddSingleton(sg => new ConnectionFactory
     {
         Uri = new Uri(Environment.GetEnvironmentVariable("SERVICE_BUS_STRING")!)
