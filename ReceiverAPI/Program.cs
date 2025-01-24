@@ -29,7 +29,8 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    var certificateClient = new CertificateClient(new Uri(Environment.GetEnvironmentVariable("KEY_VAULT_NAME")!), new DefaultAzureCredential());
+    string keyVaultName = Environment.GetEnvironmentVariable("KEY_VAULT_NAME")!;
+    var certificateClient = new CertificateClient(new Uri($"https://{keyVaultName}.vault.azure.net/"), new DefaultAzureCredential());
     var certificate = certificateClient.GetCertificate("BaseCert").Value;
 
     builder.WebHost.ConfigureKestrel(options =>
