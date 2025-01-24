@@ -86,8 +86,12 @@ jobs:
       - name: Set KEY_VAULT_NAME Environment Variable
         run: echo "KEY_VAULT_NAME=${{ secrets.KEY_VAULT_NAME }}" >> $GITHUB_ENV
 
-      - name: Set AZURE_CREDS_ENV Environment Variable
-        run: echo "AZURE_CREDS_ENV=${{ secrets.AZURE_CREDS_ENV }}" >> $GITHUB_ENV
+      - name: Set Azure Credentials Environment Variables
+        run: |
+          echo "TENANT_ID=${{ secrets.TENANT_ID }}" >> $GITHUB_ENV
+          echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> $GITHUB_ENV
+          echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> $GITHUB_ENV
+
 
       - name: Replace variables in docker-compose.yml
         run: |

@@ -23,22 +23,12 @@ if (builder.Environment.IsDevelopment())
 else
 {
     string keyVaultName = Environment.GetEnvironmentVariable("KEY_VAULT_NAME")!;
-    string credentialsJson = Environment.GetEnvironmentVariable("AZURE_CREDS_ENV")!;
+    string tenantId = Environment.GetEnvironmentVariable("TENANT_ID")!;
+    string clientId = Environment.GetEnvironmentVariable("CLIENT_ID")!;
+    string clientSecret = Environment.GetEnvironmentVariable("CLIENT_SECRET")!;
 
-    if (string.IsNullOrEmpty(credentialsJson))
-    {
-        throw new InvalidOperationException("Azure credentials JSON not set in environment variables.");
-    }
 
-    var credentials = JsonSerializer.Deserialize<AzureCreds>(credentialsJson);
-
-    if (credentials == null || string.IsNullOrEmpty(credentials.ClientId) ||
-        string.IsNullOrEmpty(credentials.ClientSecret) || string.IsNullOrEmpty(credentials.TenantId))
-    {
-        throw new InvalidOperationException("Invalid Azure credentials in environment variables.");
-    }
-
-    var credential = new ClientSecretCredential(credentials.TenantId, credentials.ClientId, credentials.ClientSecret);
+    var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
 
     var certificateClient = new CertificateClient(new Uri($"https://{keyVaultName}.vault.azure.net/"), credential: credential);
     var certificate = certificateClient.GetCertificate("BaseCert").Value;
