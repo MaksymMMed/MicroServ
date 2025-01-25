@@ -1,5 +1,6 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Certificates;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 using ReceiverAPI;
@@ -39,14 +40,15 @@ else
 
     var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
 
-    var certificateClient = new CertificateClient(new Uri($"https://{keyVaultName}.vault.azure.net/"), credential:credential);
-    var certificate = certificateClient.GetCertificate("BaseCert").Value;
+    var certificateClient = new SecretClient(new Uri($"https://{keyVaultName}.vault.azure.net/"), credential:credential);
+    var certificate = certificateClient.GetSecret("BaseCert").Value;
 
     builder.WebHost.ConfigureKestrel(options =>
     {
         options.ConfigureHttpsDefaults(httpsOptions =>
         {
-            httpsOptions.ServerCertificate = new X509Certificate2(certificate.Cer);
+            var privateKeyBytes = Convert.FromBase64String(certificate.Value);
+            httpsOptions.ServerCertificate = new X509Certificate2(privateKeyBytes);
         });
     });
 
