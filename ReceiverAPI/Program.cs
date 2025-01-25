@@ -59,7 +59,10 @@ else
     });
 
     builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")));
+    {
+        options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"),
+            sqlServerOptions => sqlServerOptions.EnableRetryOnFailure());
+    });
 }
 
 builder.Services.AddScoped<IRabbitReceiverService, RabbitReceiverService>();
