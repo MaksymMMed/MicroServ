@@ -13,33 +13,6 @@ namespace ReceiverAPI.Context
         {
             builder.Entity<WeatherForecast>()
                 .HasKey(x => x.Id);
-
-           /*builder.Entity<WeatherForecast>()
-                .HasData(
-                new WeatherForecast()
-                {
-                    Id = Guid.NewGuid(),
-                    Date = DateTime.Now.AddDays(1),
-                    TemperatureC = 32,
-                    TemperatureF = 64,
-                    Summary = "Summer"
-                },
-                new WeatherForecast()
-                {
-                    Id = Guid.NewGuid(),
-                    Date = DateTime.Now.AddDays(1),
-                    TemperatureC = -20,
-                    TemperatureF = 0,
-                    Summary = "Winter"
-                },
-                new WeatherForecast()
-                {
-                    Id = Guid.NewGuid(),
-                    Date = DateTime.Now.AddDays(1),
-                    TemperatureC = 15,
-                    TemperatureF = 32,
-                    Summary = "Spring"
-                });*/
         }
     }
 }

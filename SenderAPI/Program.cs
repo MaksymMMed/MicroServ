@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IRabbitSenderService, RabbitSenderService>();
+
 
 if (builder.Environment.IsDevelopment())
 {
@@ -48,6 +48,8 @@ else
         Uri = new Uri(Environment.GetEnvironmentVariable("SERVICE_BUS_STRING")!)
     });
 }
+
+builder.Services.AddSingleton<IRabbitSenderService, RabbitSenderService>();
 
 var app = builder.Build();
 
