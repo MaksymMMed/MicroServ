@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ReceiverAPI.Dto;
 using ReceiverAPI.Services;
 
 namespace ReceiverAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("receiver/[controller]")]
     [ApiController]
     public class ForecastController : ControllerBase
     {
@@ -15,7 +16,7 @@ namespace ReceiverAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetForecasts()
+        public async Task<ActionResult<List<GetForecastDto>>> GetForecasts()
         {
             try
             {

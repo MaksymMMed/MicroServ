@@ -6,8 +6,8 @@ using TransitService.TransitServices.Sender;
 namespace SenderAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [Route("sender/[controller]")]
+    public class ForecastController : ControllerBase
     {
 
         private static readonly string[] Summaries =
@@ -17,13 +17,13 @@ namespace SenderAPI.Controllers
 
         private readonly IRabbitSenderService _sender;
 
-        public WeatherForecastController(IRabbitSenderService service)
+        public ForecastController(IRabbitSenderService service)
         {
             _sender = service;
         }
 
         [HttpGet]
-        public WeatherForecastDto Get()
+        public ActionResult<WeatherForecastDto> Get()
         {
             int number = new Random().Next(-20, 55);
             var forecast = new WeatherForecastDto
@@ -36,7 +36,7 @@ namespace SenderAPI.Controllers
 
             _sender.SendMessage(JsonSerializer.Serialize(forecast));
 
-            return forecast;
+            return Ok(forecast);
         }
     }
 }
